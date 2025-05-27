@@ -1,3 +1,5 @@
+import userData from '../fixtures/user-data.json'
+
 describe('ORANGE HRM Tests', () => {
 
   const seletorsList = {
@@ -5,6 +7,7 @@ describe('ORANGE HRM Tests', () => {
     passwordField: "[name='password']",
     loginButton: "[type='submit']",
     sectionTitleTopBar: ".oxd-topbar-header-breadcrumb-module",
+    dashboardGrid: ".orangehrm-dashboard-grid",
     wrongcredentialAlert: "[role='alert']"
   }
 
@@ -16,7 +19,6 @@ describe('ORANGE HRM Tests', () => {
     cy.location('pathname').should('equal', '/web/index.php/dashboard/index')
     cy.get(seletorsList.sectionTitleTopBar).contains('Dashboard')
   })
-
   it('login - fail', () => {
     cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
     cy.get(seletorsList.usernameField).type('Test')
