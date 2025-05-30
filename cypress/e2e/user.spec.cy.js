@@ -1,49 +1,61 @@
 import userData from '../fixtures/user-data.json'
+import LoginPage from '../pages/loginPage.js'
+
+const loginPage = new LoginPage()
 
 describe('ORANGE HRM Tests', () => {
 
-  const seletorsList = {
-    usernameField: "[name='username']",
-    passwordField: "[name='password']",
-    loginButton: "[type='submit']",
+  const selectorsList = {    
     sectionTitleTopBar: ".oxd-topbar-header-breadcrumb-module",
     dashboardGrid: ".orangehrm-dashboard-grid",
-    wrongcredentialAlert: "[role='alert']",
     myInfoButton: '[href="/web/index.php/pim/viewMyDetails"]',
     firstNameField: "[name='firstName']",
     lastNameField: "[name='lastName']",
     genericField: ".oxd-input--active",
     dateField: "[placeholder='yyyy-dd-mm']",
+    genericCombobox: ".oxd-select-text--arrow",
+    secondItemCombobox: ".oxd-select-dropdown > :nth-child(27)",
+    thirdItemCombobox: ".oxd-select-dropdown > :nth-child(4)",
+    fourthItemCombobox: ".oxd-select-dropdown > :nth-child(3)",
+    fifthItemCombobox: ".oxd-select-dropdown > :nth-child(9)",
     dateCloseButton: ".--close",
-    submitButton: "[type='submit']"
+    submitButton: "[type='submit']",
   }
 
   it.only('User Info Update - success', () => {
-
-    cy.visit('/auth/login')
-    cy.get(seletorsList.usernameField).type(userData.userSuccess.username)
-    cy.get(seletorsList.passwordField).type(userData.userSuccess.password)
-    cy.get(seletorsList.loginButton).click()
+    loginPage.accessLoginPage()
+    loginPage.loginWithUser(userData.userSuccess.username, userData.userSuccess.password)
+    
     cy.location('pathname').should('equal', '/web/index.php/dashboard/index')
-    cy.get(seletorsList.sectionTitleTopBar).contains('Dashboard')
-    cy.get(seletorsList.myInfoButton).click()
-    cy.get(seletorsList.firstNameField).clear().type('FirstNameTest')
-    cy.get(seletorsList.lastNameField).clear().type('LastNameTest')
-    cy.get(seletorsList.genericField).eq(3).clear().type('Employee')
-    cy.get(seletorsList.genericField).eq(4).clear().type('OtherIdTest')
-    cy.get(seletorsList.genericField).eq(5).clear().type('DriversLicenseTest')
-    cy.get(seletorsList.genericField).eq(7).clear().type('2025-03-10')
-    cy.get(seletorsList.dateCloseButton).click()
-    cy.get(seletorsList.submitButton).eq(0).click()
+    cy.get(selectorsList.sectionTitleTopBar).contains('Dashboard')
+    cy.get(selectorsList.myInfoButton).click()
+    cy.get(selectorsList.firstNameField).clear().type('FirstNameTest')
+    cy.get(selectorsList.lastNameField).clear().type('LastNameTest')
+    cy.get(selectorsList.genericField).eq(3).clear().type('Employee')
+    cy.get(selectorsList.genericField).eq(4).clear().type('OtherIdTest')
+    cy.get(selectorsList.genericField).eq(5).clear().type('DriversLicenseTest')
+    cy.get(selectorsList.genericField).eq(7).clear().type('2025-03-10')
+    cy.get(selectorsList.genericField).eq(8).clear().type('1199956565')
+    cy.get(selectorsList.dateCloseButton).click()
+    cy.get(selectorsList.submitButton).eq(0).click({ force: true})
     cy.get('body').should('contain', 'Successfully Updated')
     cy.get('.oxd-toast-close')
+
+    cy.get(selectorsList.genericCombobox).eq(0).click({ force: true})
+    cy.get(selectorsList.secondItemCombobox).click()
+    cy.get(selectorsList.genericCombobox).eq(1).click({ force: true})
+    cy.get(selectorsList.thirdItemCombobox).click()
+    cy.get(selectorsList.genericCombobox).eq(2).click({ force: true})
+    cy.get(selectorsList.fourthItemCombobox).click()
+    cy.get(selectorsList.genericCombobox).eq(3).click({ force: true})
+    cy.get(selectorsList.fifthItemCombobox).click()
   })
 
   it('login - fail', () => {
     cy.visit('/auth/login')
-    cy.get(seletorsList.usernameField).type('Test')
-    cy.get(seletorsList.passwordField).type('test')
-    cy.get(seletorsList.loginButton).click()
-    cy.get(seletorsList.wrongcredentialAlert)
+    cy.get(selectorsList.usernameField).type('Test')
+    cy.get(selectorsList.passwordField).type('test')
+    cy.get(selectorsList.loginButton).click()
+    cy.get(selectorsList.wrongcredentialAlert)
   })
 })
