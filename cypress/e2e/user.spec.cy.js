@@ -19,7 +19,7 @@ describe('ORANGE HRM Tests', () => {
 
     MenuPage.accessMyInfo()
 
-    MyinfoPage.completeMyInfo()
+    MyinfoPage.fillPersonalDetails()
   })
 
   it('login - fail', () => {
